@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Turkey Research Lab</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style/project.css">
+        <link rel="icon" href="http://icons.iconarchive.com/icons/martin-berube/flat-animal/128/turkey-icon.png">
+
+        <script src="jquery-1.11.0.js"></script>
+        <script type="text/javascript" src="js/login.js?$$REVISION$$"></script>
+        <script type="text/javascript" src="js/home.js?$$REVISION$$"></script>
+        <script type="text/javascript" src="js/search.js?$$REVISION$$"></script>
+        <script type="text/javascript" src="js/multiple_search.js?$$REVISION$$"></script>
+        <script type="text/javascript" src="js/upload.js?$$REVISION$$"></script>
+        <script type="text/javascript" src="js/ListAll.js?$$REVISION$$"></script>
+        <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.ajaxfileupload.js?$$REVISION$$"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('input[type="file"]').ajaxfileupload({
+                    'action': 'UploadFile',
+                    'onComplete': function (response) {
+                        $('#uploads').hide();
+                        $('#messages').show();
+
+                        var statusVal = JSON.stringify(response.status);
+
+                        if (statusVal == "false")
+                        {
+                            $("#messages").html("<font color='red'>" + JSON.stringify(response.message) + "</font>");
+                        }
+                        if (statusVal == "true")
+                        {
+                            $("#messages").html("<font color='green'>" + JSON.stringify(response.message) + "</font>");
+                        }
+                    },
+                    'onStart': function () {
+                        $('#uploads').show();
+                        $('#messages').hide();
+                    }
+                });
+            });
+
+            function update()
+            {
+                var ga = ["Cedar Creek", "BF Grant", "Silver Lake"];
+                var tx = ["Temple", "MT7", "Anjelina", "D2Panhandle", "D7_OaksPrairie", "Coon Pond", "Gus Engeling", "Bushy Creek", "White Rock", "LBJ", "Strawn", "Crook_Canyon"];
+                var la = ["Caddo Parish", "Kisatchie", "Peason Ridge", "Sherburne", "Barsdale_AFS"];
+                var az = ["Goulds", "Merriams"];
+                var sc = ["SRS", "Webb_WMA_Complex"];
+                var nv = ["Nevada"];
+                var state = document.getElementById("upload_state");
+                var site = document.getElementById("upload_site");
+                var selected = state.value;
+                var html = '<option selected="selected">Select Site</option>';
+                if (selected === "GA")
+                {
+                    for (var i = 0; i < ga.length; i++)
+                    {
+                        html += '<option value="' + ga[i] + '">' + ga[i] + '</option>';
+                    }
+                } else if (selected === "TX")
+                {
+                    for (var j = 0; j < tx.length; j++)
+                    {
+                        html += '<option value="' + tx[j] + '">' + tx[j] + '</option>';
+                    }
+                } else if (selected === "LA")
+                {
+                    for (var k = 0; k < la.length; k++)
+                    {
+                        html += '<option value="' + la[k] + '">' + la[k] + '</option>';
+                    }
+                } else if (selected === "AZ")
+                {
+                    for (var l = 0; l < az.length; l++)
+                    {
+                        html += '<option value="' + az[l] + '">' + az[l] + '</option>';
+                    }
+                } else if (selected === "SC")
+                {
+                    for (var m = 0; m < sc.length; m++)
+                    {
+                        html += '<option value="' + sc[m] + '">' + sc[m] + '</option>';
+                    }
+                } else if (selected === "NV")
+                {
+                    for (var n = 0; n < nv.length; n++)
+                    {
+                        html += '<option value="' + nv[n] + '">' + nv[n] + '</option>';
+                    }
+                }
+                site.innerHTML = html;
+            }
+
+            function search_update()
+            {
+                var ga = ["Cedar Creek", "BF Grant", "Silver Lake"];
+                var tx = ["Temple", "MT7", "Anjelina", "D2Panhandle", "D7_OaksPrairie", "Coon Pond", "Gus Engeling", "Bushy Creek", "White Rock", "LBJ", "Strawn", "Crook_Canyon"];
+                var la = ["Caddo Parish", "Kisatchie", "Peason Ridge", "Sherburne", "Barsdale_AFS"];
+                var az = ["Goulds", "Merriams"];
+                var sc = ["SRS", "Webb_WMA_Complex"];
+                var nv = ["Nevada"];
+                var state = document.getElementById("search_state");
+                var site = document.getElementById("search_site");
+                var selected = state.value;
+                var html = '<option selected="selected">Select Site</option>';
+                if (selected === "GA")
+                {
+                    for (var i = 0; i < ga.length; i++)
+                    {
+                        html += '<option value="' + ga[i] + '">' + ga[i] + '</option>';
+                    }
+                } else if (selected === "TX")
+                {
+                    for (var j = 0; j < tx.length; j++)
+                    {
+                        html += '<option value="' + tx[j] + '">' + tx[j] + '</option>';
+                    }
+                } else if (selected === "LA")
+                {
+                    for (var k = 0; k < la.length; k++)
+                    {
+                        html += '<option value="' + la[k] + '">' + la[k] + '</option>';
+                    }
+                } else if (selected === "AZ")
+                {
+                    for (var l = 0; l < az.length; l++)
+                    {
+                        html += '<option value="' + az[l] + '">' + az[l] + '</option>';
+                    }
+                } else if (selected === "SC")
+                {
+                    for (var m = 0; m < sc.length; m++)
+                    {
+                        html += '<option value="' + sc[m] + '">' + sc[m] + '</option>';
+                    }
+                } else if (selected === "NV")
+                {
+                    for (var n = 0; n < nv.length; n++)
+                    {
+                        html += '<option value="' + nv[n] + '">' + nv[n] + '</option>';
+                    }
+                }
+                site.innerHTML = html;
+            }
+
+            function upload_reset() {
+                //   document.getElementById("UploadRequestForm").submit();
+                document.getElementById("UploadRequestForm").reset();
+            }
+        </script>
+
+    </head>
+    
+    <body> 
+<header>
+      <!--  <h1>Warnell School of Forestry and Natural Resources</h1>-->
+      <img src="style/warnell.jpg" width="800" height="100">
+    </header>
+        <div id="header">
+            <table>
+                <tr>
+                    <td valign="top" width="15%" style="white-space: nowrap;">
+                        <img src="style/turkey.jpg" width="300" height="250">
+
+                    </td>
+                    <td>
+                        <h3>Welcome to, </h3>
+                        <h2 style="font-family:verdana; font-size:40px;">TURKEY RESEARCH LAB!</h2>
+                        <h1> At the UNIVERSITY OF GEORGIA.</h1>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div id="body">
+
+            <table align="left">
+                <tr>
+                    <td valign="top" width="18%" style="white-space: nowrap;">
+                        <div id="menu" class="form-style-3">
+                            <fieldset>
+                                <legend id="username">Menu</legend>
+                                <ul>
+
+                                    <li id="Home"><input type="button" value="Home" /></li>
+                                    <li id="Login"><input type="button" value="Login" /></li>
+                                    <li id="Upload"><input type="button" value="Upload Records" /></li>
+                                    <li id="Search"><input type="button" value="Search" /></li>
+                                    <li id="List"><input type="button" value="List All Records" /></li>
+                                    <li id="Logout"><input type="button" value="Logout" /></li>
+                                </ul>
+                            </fieldset>
+                        </div>
+                    </td>
+                    <td width="82%" style="white-space: nowrap;">
+                        <div id="HomeDiv" class="form-style-2">
+                            <H2>Meet the people</H2>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a href="https://www.warnell.uga.edu/people/faculty/dr-michael-chamberlain"/>  <img src="style/Chamberlain_Michael.jpg" width="150" height="175" alt="Pictured: Dr. Michael Chamberlain" typeof="Image" />
+                                        <br>
+                                        Chamberlain, Michael
+                                        <br>
+                                        Professor, Wildlife Ecology and Management
+                                        <br>
+                                        <a href="mailto:mchamberlain@warnell.uga.edu">Email Michael</a>                                      </td>
+                                    <td>
+                                        <a href="https://www.warnell.uga.edu/people/staff/bradley-cohen">  <img src="style/Cohen_Bradley.jpg" width="150" height="175" alt="Bradley Cohen" typeof="Image" />
+                                            <br> 
+                                            Cohen, Bradley
+                                            <br>
+                                            Post-Doctoral Researcher
+                                            <br>     
+                                            <a href="mailto:bsc3@uga.edu">Email Bradley</a>
+                                            <br>  
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            <br>
+                                            <br>
+                                            </div>
+
+                                            <div id="LoginDiv" class="form-style-2" hidden="true">
+                                                <form id="LoginForm">
+                                                    <fieldset>
+                                                        <legend>LogIn</legend>
+
+                                                        <p>
+                                                            <label for="userID">UserName:</label> 
+                                                            <input id="LoginuserID" type="text" name="userID" placeholder="johndoe" required/>
+                                                            <span class="form_hint">Hint: Your User name.</span>
+                                                        </p>
+                                                        <p>
+                                                            <label for="password">Password:</label> 
+                                                            <input id="Loginpassword" type="password" name="password" placeholder="johndoe" required/>
+                                                            <span class="form_hint">Hint: Your Password.</span>
+                                                        </p>
+
+                                                        <p>
+                                                            <input id="LoginBtn" type="button" value="Submit" />
+                                                            &nbsp;&nbsp;&nbsp;&nbsp; 
+                                                            <input id="LoginCancelBtn" type="button" value="Cancel" />
+                                                        </p>
+
+
+
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+
+                                            <div id="UploadDiv" class="form-style-2" hidden="true">
+                                                <form id="UploadRequestForm">
+                                                    <fieldset>
+                                                        <legend>Insert Bird Record</legend>
+
+                                                        <table>
+                                                            <tr>
+                                                                <td>
+                                                                    <label for="collor_id">Collar ID:</label> 
+                                                                    <input id="upload_collor_id" type="number" name="collor_id" required/> 
+                                                                    <br>
+                                                                    <br>
+                                                                    <label for="student_name">Student Name:</label>
+                                                                    <input id="upload_student_name" type="text" name="student_name" required/> 
+                                                                    <br>
+                                                                    <br>
+                                                                    <label for="state">State:</label>
+                                                                    <select name="state" id="upload_state" onchange="update()" required>
+                                                                        <option selected="selected">Select State</option>
+                                                                        <option value="AL">Alabama</option>
+                                                                        <option value="AK">Alaska</option>
+                                                                        <option value="AZ">Arizona</option>
+                                                                        <option value="AR">Arkansas</option>
+                                                                        <option value="CA">California</option>
+                                                                        <option value="CO">Colorado</option>
+                                                                        <option value="CT">Connecticut</option>
+                                                                        <option value="DE">Delaware</option>
+                                                                        <option value="DC">District of Columbia</option>
+                                                                        <option value="FL">Florida</option>
+                                                                        <option value="GA">Georgia</option>
+                                                                        <option value="HI">Hawaii</option>
+                                                                        <option value="ID">Idaho</option>
+                                                                        <option value="IL">Illinois</option>
+                                                                        <option value="IN">Indiana</option>
+                                                                        <option value="IA">Iowa</option>
+                                                                        <option value="KS">Kansas</option>
+                                                                        <option value="KY">Kentucky</option>
+                                                                        <option value="LA">Louisiana</option>
+                                                                        <option value="ME">Maine</option>
+                                                                        <option value="MD">Maryland</option>
+                                                                        <option value="MA">Massachusetts</option>
+                                                                        <option value="MI">Michigan</option>
+                                                                        <option value="MN">Minnesota</option>
+                                                                        <option value="MS">Mississippi</option>
+                                                                        <option value="MO">Missouri</option>
+                                                                        <option value="MT">Montana</option>
+                                                                        <option value="NE">Nebraska</option>
+                                                                        <option value="NV">Nevada</option>
+                                                                        <option value="NH">New Hampshire</option>
+                                                                        <option value="NJ">New Jersey</option>
+                                                                        <option value="NM">New Mexico</option>
+                                                                        <option value="NY">New York</option>
+                                                                        <option value="NC">North Carolina</option>
+                                                                        <option value="ND">North Dakota</option>
+                                                                        <option value="OH">Ohio</option>
+                                                                        <option value="OK">Oklahoma</option>
+                                                                        <option value="OR">Oregon</option>
+                                                                        <option value="PA">Pennsylvania</option>
+                                                                        <option value="RI">Rhode Island</option>
+                                                                        <option value="SC">South Carolina</option>
+                                                                        <option value="SD">South Dakota</option>
+                                                                        <option value="TN">Tennessee</option>
+                                                                        <option value="TX">Texas</option>
+                                                                        <option value="UT">Utah</option>
+                                                                        <option value="VT">Vermont</option>
+                                                                        <option value="VA">Virginia</option>
+                                                                        <option value="WA">Washington</option>
+                                                                        <option value="WV">West Virginia</option>
+                                                                        <option value="WI">Wisconsin</option>
+                                                                        <option value="WY">Wyoming</option>
+                                                                    </select>
+
+                                                                    <br>
+                                                                    <br>
+                                                                    <label for="site">Site:</label> 
+                                                                    <select name="site" id="upload_site" required>
+                                                                        <option selected="selected">Select Site</option>
+                                                                    </select>
+                                                                    <br>
+                                                                    <br>
+                                                                    <label for="gender">Gender:</label> 
+                                                                    <select name="gender" id="upload_gender" required>
+                                                                        <option selected="selected">Select Gender</option>
+                                                                        <option value="male" >Male</option>
+                                                                        <option value="female">Female</option>
+                                                                    </select>
+                                                                    <br>
+                                                                    <br>
+                                                                    <label for="age">Age:</label> 
+                                                                    <select name="age" id="upload_age" required>
+                                                                        <option selected="selected">Select Age</option>
+                                                                        <option value="adult" >Adult</option>
+                                                                        <option value="juvenile">Juvenile</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td> 
+                                                                    <br>
+                                                                    <label for="comments">Comment:</label> 
+                                                                    <select name="comments" id="upload_comments" multiple="multiple">
+                                                                        <option selected="selected">Select Comments</option>
+                                                                        <option value="Incubating" >Incubating</option>
+                                                                        <option value="Laying">Laying</option>
+                                                                        <option value="Breeding">Breeding</option>
+                                                                        <option value="Pre-Nesting">Pre-Nesting</option>
+                                                                        <option value="Post reproduction">Post reproduction</option>
+                                                                        <option value="Dead">Dead</option>
+                                                                    </select>
+                                                                    <br>
+
+                                                                    <br> 
+                                                                    <label for="addcomm">Additional Comment:</label> 
+                                                                    <textarea name="addcomm" id="upload_addcomm"></textarea>
+                                                                    <br>
+                                                                    <br>
+                                                                    <label for="rorf">Raw/Finalized:</label>
+                                                                    <select name="rorf" id="upload_rorf" required>
+                                                                        <option selected="selected">Select File Type</option>
+                                                                        <option value="raw" >Raw</option>
+                                                                        <option value="finalized">Finalized</option>
+                                                                        <option value="gdf" >Super Raw(GDF format)</option>
+                                                                    </select>
+                                                                    <br>
+                                                                    <br>
+                                                                    <label for="file">File:</label> 
+                                                                    <input type="file" id="upload_file" name="file" required/>
+                                                                    <div id="uploads" style="display: none;">Uploading...</div>
+                                                                    <div id="messages"></div> 
+                                                                    <p>
+                                                                        <input id="uploadBtn" type="button" value="Upload" />
+                                                                        <input id="uploadreset" type="button" value="Reset" onclick="upload_reset()" />
+
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+
+
+
+                                            <div id="SearchDiv" class="form-style-2" hidden="true">
+                                                <form id="myAjaxRequestForm">
+                                                    <fieldset>
+                                                        <legend>Search Turkey Lab Record</legend>
+
+                                                        <p>
+                                                            <label for="collor_ID">Bird ID:</label> 
+                                                            <input id="search_ID" type="number" name="collor_ID" placeholder="Enter Bird ID" required/>
+                                                            <span class="form_hint">Hint: Use Bird's collar ID to search.</span>
+                                                        </p>
+                                                        <p>
+                                                            <input id="SearchBtn" type="button" value="Submit" />
+                                                        </p>
+                                                    </fieldset>
+                                                </form>
+                                                <form id="myotherAjaxRequestForm">
+                                                    <fieldset>
+                                                        <legend>Search Multiple Records</legend>
+                                                        <table>
+                                                            <tr>
+                                                                <td>
+                                                                   
+
+                                                                        <label for="state">State:</label>
+                                                                        <select name="state" id="search_state" onchange="search_update()">
+                                                                            <option selected="selected"  value="">Select State</option>
+                                                                            <option value="AL">Alabama</option>
+                                                                            <option value="AK">Alaska</option>
+                                                                            <option value="AZ">Arizona</option>
+                                                                            <option value="AR">Arkansas</option>
+                                                                            <option value="CA">California</option>
+                                                                            <option value="CO">Colorado</option>
+                                                                            <option value="CT">Connecticut</option>
+                                                                            <option value="DE">Delaware</option>
+                                                                            <option value="DC">District of Columbia</option>
+                                                                            <option value="FL">Florida</option>
+                                                                            <option value="GA">Georgia</option>
+                                                                            <option value="HI">Hawaii</option>
+                                                                            <option value="ID">Idaho</option>
+                                                                            <option value="IL">Illinois</option>
+                                                                            <option value="IN">Indiana</option>
+                                                                            <option value="IA">Iowa</option>
+                                                                            <option value="KS">Kansas</option>
+                                                                            <option value="KY">Kentucky</option>
+                                                                            <option value="LA">Louisiana</option>
+                                                                            <option value="ME">Maine</option>
+                                                                            <option value="MD">Maryland</option>
+                                                                            <option value="MA">Massachusetts</option>
+                                                                            <option value="MI">Michigan</option>
+                                                                            <option value="MN">Minnesota</option>
+                                                                            <option value="MS">Mississippi</option>
+                                                                            <option value="MO">Missouri</option>
+                                                                            <option value="MT">Montana</option>
+                                                                            <option value="NE">Nebraska</option>
+                                                                            <option value="NV">Nevada</option>
+                                                                            <option value="NH">New Hampshire</option>
+                                                                            <option value="NJ">New Jersey</option>
+                                                                            <option value="NM">New Mexico</option>
+                                                                            <option value="NY">New York</option>
+                                                                            <option value="NC">North Carolina</option>
+                                                                            <option value="ND">North Dakota</option>
+                                                                            <option value="OH">Ohio</option>
+                                                                            <option value="OK">Oklahoma</option>
+                                                                            <option value="OR">Oregon</option>
+                                                                            <option value="PA">Pennsylvania</option>
+                                                                            <option value="RI">Rhode Island</option>
+                                                                            <option value="SC">South Carolina</option>
+                                                                            <option value="SD">South Dakota</option>
+                                                                            <option value="TN">Tennessee</option>
+                                                                            <option value="TX">Texas</option>
+                                                                            <option value="UT">Utah</option>
+                                                                            <option value="VT">Vermont</option>
+                                                                            <option value="VA">Virginia</option>
+                                                                            <option value="WA">Washington</option>
+                                                                            <option value="WV">West Virginia</option>
+                                                                            <option value="WI">Wisconsin</option>
+                                                                            <option value="WY">Wyoming</option>
+                                                                        </select>
+
+                                                                        <br>
+                                                                        <br>
+                                                                        <label for="site">Site:</label> 
+                                                                        <select name="site" id="search_site">
+                                                                            <option selected="selected" value="">Select Site</option>
+                                                                        </select>
+                                                                        <br>
+                                                                        <br>
+                                                                        <label for="gender">Gender:</label> 
+                                                                        <select name="gender" id="search_gender" >
+                                                                            <option selected="selected" value="">Select Gender</option>
+                                                                            <option value="male" >Male</option>
+                                                                            <option value="female">Female</option>
+                                                                        </select>
+                                                                        <br>
+                                                                        <br>
+                                                                        <label for="age">Age:</label> 
+                                                                        <select name="age" id="search_age">
+                                                                            <option selected="selected" value="">Select Age</option>
+                                                                            <option value="adult" >Adult</option>
+                                                                            <option value="juvenile">Juvenile</option>
+                                                                        </select>
+                                                                        <br>
+                                                                </td>
+
+                                                                <td> 
+                                                                    <br>
+                                                                    <label for="comments">Comment:</label> 
+                                                                    <select name="comments" id="search_comments">
+                                                                        <option selected="selected" value="">Select Comments</option>
+                                                                        <option value="Incubating" >Incubating</option>
+                                                                        <option value="Laying">Laying</option>
+                                                                        <option value="Breeding">Breeding</option>
+                                                                        <option value="Pre-Nesting">Pre-Nesting</option>
+                                                                        <option value="Post reproduction">Post reproduction</option>
+                                                                    </select>
+                                                                    <br>
+                                                                    <br>
+                                                                    <label for="rorf">Raw/Finalized:</label>
+                                                                    <select name="rorf" id="search_rorf">
+                                                                        <option selected="selected" value="">Select File Type</option>
+                                                                        <option value="raw" >Raw</option>
+                                                                        <option value="finalized">Finalized</option>
+                                                                        <option value="gdf" >Super Raw(GDF format)</option>
+                                                                    </select>
+                                                                    <br>
+
+                                                                    <p>
+                                                                        <input id="MultiSearchBtn" type="button" value="Submit" />
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+
+                                            <div id="AllRecordsDiv" class="form-style-2" hidden="true">
+                                                <fieldset>
+                                                    <legend>All Bird Records</legend>
+
+                                                    <table class="bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <td><b>Collar_ID</b></td>
+                                                                <td><b>Student name</b></td>
+                                                                <td><b>State</b></td>
+                                                                <td><b>Site</b></td>
+                                                                <td><b>Gender</b></td>
+                                                                <td><b>Age</b></td>
+                                                                <td><b>Comments</b></td>
+                                                                <td><b>Additional Comments</b></td>
+                                                                <td><b>File List</b></td>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody id="userAjaxResponse">
+                                                        </tbody>
+                                                    </table>
+                                                </fieldset>
+                                            </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+
+                        <div id="footer">
+                            <footer>
+                                <p>
+                                   <font size="2"> This website is designed by Akanksha Chandel.<br> Email: akankshachandel73@gmail.com    
+                               <font size="2">
+                                </p>
+                             
+                                    <a href="disclaimer.html">Disclaimer</a>
+
+
+
+                            </footer>
+
+                        </div>
+
+                        </body>
+                        </html>
