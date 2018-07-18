@@ -7,7 +7,7 @@ package turkeylab;
 
 /**
  *
- * @author amitabh
+ * @author akanksha
  */
 public class Bird {
 
