@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author amitabh
+ * @author akanksha
  */
 public class SearchService extends HttpServlet {
 
